@@ -8,6 +8,8 @@ static uint16_t lastRam = 0;
 void log_setup() {
 	Serial.begin(115200);
 	runMs = util_millis();
+	log_cycle();
+	debug("Logger has been initialized");
 }
 
 static void log_status() {

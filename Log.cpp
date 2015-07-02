@@ -7,17 +7,17 @@ static uint16_t lastRam = 0;
 
 void log_setup() {
 	Serial.begin(115200);
-	runMs = util_millis();
+	runMs = ms();
 	log_cycle();
 	debug("Logger has been initialized");
 }
 
 static void log_status() {
-	if (util_millis() - lastStatusMs < LOG_PRINT_STATUS_MS) {
+	if (ms() - lastStatusMs < LOG_PRINT_STATUS_MS) {
 		return;
 	}
-	lastStatusMs = util_millis();
-	uint16_t free = util_freeRam();
+	lastStatusMs = ms();
+	uint16_t free = getFreeRam();
 	if (lastRam != free) {
 		lastRam = free;
 		debug("Status -> Free RAM: %u", free);

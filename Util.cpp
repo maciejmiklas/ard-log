@@ -130,41 +130,16 @@ uint8_t maskR(uint8_t bits) {
 	return bv;
 }
 
-void fbyte(uint8_t byte, String &buf) {
+boolean inline checkBit(uint8_t byte, uint8_t bit) {
+	return byte & (1 << bit);
+}
 
-	switch (byte) {
-
-	default:
-	case 0x1:
-		buf = "0000 0001";
-		break;
-
-	case 0x3:
-		buf = "0000 0011";
-		break;
-
-	case 0x7:
-		buf = "0000 0111";
-		break;
-
-	case 0xF:
-		buf = "0000 1111";
-		break;
-
-	case 0x1F:
-		buf = "0001 1111";
-		break;
-
-	case 0x3F:
-		buf = "0011 1111";
-		break;
-
-	case 0x7F:
-		buf = "0111 1111";
-		break;
-
-	case 0xFF:
-		buf = "1111 1111";
-		break;
+void fbyte(uint8_t byte, char *buf) {
+	uint8_t bit = 7;
+	for (uint8_t idx = 0; idx < 8; idx++) {
+		buf[idx] = checkBit(byte, bit) ? '1' : '0';
+		bit--;
 	}
+
+	buf[8] = NULL;
 }

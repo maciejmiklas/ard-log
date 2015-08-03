@@ -32,26 +32,14 @@ void log_cycle() {
 #endif
 }
 
-void static cpgm(const __FlashStringHelper *ifsh) {
-	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
-	uint8_t idx = 0;
-	unsigned char ch = 0;
-	do {
-		ch = pgm_read_byte(p++);
-		pgbuf[idx++]=ch;
-		if(idx == PGBUF_SIZE) {
-			break;
-		}
-	}while (ch != 0);
-}
 
 void debug(const __FlashStringHelper *ifsh, ...) {
-// print time
+	// print time
 	sprintf(sbuf, ">>[%03u-%02u:%02u:%02u,%03u]-> ", lt.dd, lt.hh, lt.mm, lt.ss, lt.ml);
 	Serial.print(sbuf);
 
-// print the message
-	cpgm(ifsh);
+	// print the message
+	cpgm(ifsh, pgbuf, PGBUF_SIZE);
 	va_list va;
 	va_start(va, ifsh);
 	vsprintf(sbuf, pgbuf, va);

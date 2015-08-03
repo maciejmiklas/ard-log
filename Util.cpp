@@ -169,3 +169,16 @@ void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {
 	}
 	delete(array);
 }
+
+void cpgm(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) {
+	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
+	uint8_t idx = 0;
+	unsigned char ch = 0;
+	do {
+		ch = pgm_read_byte(p++);
+		pgbuf[idx++]=ch;
+		if(idx == bufSize) {
+			break;
+		}
+	}while (ch != 0);
+}

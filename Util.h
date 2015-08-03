@@ -22,4 +22,6 @@ uint8_t** alloc2DArray8(uint8_t rows, uint8_t cols);
 uint8_t** init2DArray8(uint8_t rows, uint8_t cols);
 void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols);
 
+void cpgm(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize);
+
 #endif /* DOMAIN_H_ */

@@ -8,8 +8,8 @@
 
 #define PRINT_FREE_RAM true
 
-#define PGBUF_SIZE 50
-#define SBUF_SIZE 120
+const uint8_t PGBUF_SIZE = 50;
+const uint8_t SBUF_SIZE = 120;
 
 void log_setup();
 void log_cycle();

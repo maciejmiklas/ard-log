@@ -1,48 +1,61 @@
 #include "Log.h"
 
 static Time lt;
-static uint32_t runMs;
-static uint32_t lastStatusMs = 0;
 static uint16_t lastRam = 0;
+static char sbuf[SBUF_SIZE];
+static char pgbuf[PGBUF_SIZE];
 
 void log_setup() {
 	Serial.begin(115200);
-	runMs = ms();
 	log_cycle();
-	debug("Logger has been initialized");
+	debug(F("Logger initialized, free RAM: %u"), getFreeRam());
 }
 
-static void log_status() {
-	if (ms() - lastStatusMs < LOG_PRINT_STATUS_MS) {
-		return;
-	}
-	lastStatusMs = ms();
+void log_freeRAM(char const *msg) {
+	uint16_t free = getFreeRam();
+	debug(F("Free RAM (%s): %u"), msg, free);
+}
+
+static inline void log_status() {
 	uint16_t free = getFreeRam();
 	if (lastRam != free) {
 		lastRam = free;
-		debug("Status -> Free RAM: %u", free);
+		debug(F("Status -> Free RAM: %u"), free);
 	}
 }
 
 void log_cycle() {
-	timer_sample(&lt, runMs);
+	timer_sample(&lt);
+
+#if PRINT_FREE_RAM
 	log_status();
+#endif
 }
 
-void debug(const char *fmt, ...) {
-	char buf[120];
+void static cpgm(const __FlashStringHelper *ifsh) {
+	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
+	uint8_t idx = 0;
+	unsigned char ch = 0;
+	do {
+		ch = pgm_read_byte(p++);
+		pgbuf[idx++]=ch;
+		if(idx == PGBUF_SIZE) {
+			break;
+		}
+	}while (ch != 0);
+}
 
-	// print time
-	sprintf(buf, ">>[%03u-%02u:%02u:%02u,%03u]-> ", lt.dd, lt.hh, lt.mm, lt.ss,
-			lt.ml);
-	Serial.print(buf);
+void debug(const __FlashStringHelper *ifsh, ...) {
+// print time
+	sprintf(sbuf, ">>[%03u-%02u:%02u:%02u,%03u]-> ", lt.dd, lt.hh, lt.mm, lt.ss, lt.ml);
+	Serial.print(sbuf);
 
-	// print the message
+// print the message
+	cpgm(ifsh);
 	va_list va;
-	va_start(va, fmt);
-	vsprintf(buf, fmt, va);
+	va_start(va, ifsh);
+	vsprintf(sbuf, pgbuf, va);
 	va_end(va);
-	Serial.println(buf);
+	Serial.println(sbuf);
 }
-
 

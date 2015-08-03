@@ -18,4 +18,8 @@ uint8_t abs8(int8_t val);
 uint8_t maskL(uint8_t bits);
 uint8_t maskR(uint8_t bits);
 
+uint8_t** alloc2DArray8(uint8_t rows, uint8_t cols);
+uint8_t** init2DArray8(uint8_t rows, uint8_t cols);
+void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols);
+
 #endif /* DOMAIN_H_ */

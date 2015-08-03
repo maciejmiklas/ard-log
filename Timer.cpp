@@ -5,6 +5,10 @@
 #define TR_SEC_HH 3600
 #define TR_SEC_MM 60
 
+void timer_sample(Time *ts) {
+	timer_sample(ts, 0);
+}
+
 //long milis =  126000000 + 1440000 + 17000;// 1d 11h 24m 17s
 //long milis =  345600000 + 1440000 + 17000;// 4d 0h 24m 17s
 //long milis =  446400000 + 1440000 + 17000;// 5d 4h 24m 17s
@@ -30,5 +34,4 @@ void timer_sample(Time *ts, uint32_t timeMilis) {
 	// millis of a second
 	ts->ml = (milis % 1000);
 }
-
 

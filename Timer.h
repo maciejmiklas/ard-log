@@ -17,4 +17,6 @@ typedef struct {
  */
 void timer_sample(Time *ts, uint32_t startMilis);
 
+void timer_sample(Time *ts);
+
 #endif /* Timer_H_ */

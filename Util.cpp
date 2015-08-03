@@ -1,6 +1,6 @@
 #include <Util.h>
 
-static uint32_t cycleMs;
+static uint32_t cycleMs = 0;
 
 void sortu8(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
@@ -142,4 +142,30 @@ void fbyte(uint8_t byte, char *buf) {
 	}
 
 	buf[8] = NULL;
+}
+
+uint8_t** alloc2DArray8(uint8_t rows, uint8_t cols) {
+	uint8_t **array = new uint8_t*[rows];
+	for (uint8_t row = 0; row < rows; row++) {
+		array[row] = new uint8_t[cols];
+	}
+	return array;
+}
+
+uint8_t** init2DArray8(uint8_t rows, uint8_t cols) {
+	uint8_t **array = new uint8_t*[rows];
+	for (uint8_t row = 0; row < rows; row++) {
+		array[row] = new uint8_t[cols];
+		for (uint8_t col = 0; col < cols; col++) {
+			array[row][col] = 0;
+		}
+	}
+	return array;
+}
+
+void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {
+	for (uint8_t row = 0; row < rows; row++) {
+		delete(array[row]);
+	}
+	delete(array);
 }

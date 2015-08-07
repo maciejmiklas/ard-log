@@ -1,5 +1,5 @@
-#ifndef Log_H_
-#define Log_H_
+#ifndef AU_Log_h
+#define AU_Log_h
 
 #include "Arduino.h"
 #include "stdarg.h"
@@ -7,9 +7,10 @@
 #include "Util.h"
 
 #define PRINT_FREE_RAM true
+#define LOG_DISABLED false
 
-const uint8_t PGBUF_SIZE = 50;
-const uint8_t SBUF_SIZE = 120;
+const static uint8_t PGBUF_SIZE = 80;
+const static uint8_t SBUF_SIZE = 120;
 
 void log_setup();
 void log_cycle();
@@ -18,4 +19,4 @@ void log_freeRAM(char const *msg);
 //void debug(const char *fmt, ...);
 void debug(const __FlashStringHelper *ifsh, ...);
 
-#endif /* Log_H_ */
+#endif /* AU_Log_h */

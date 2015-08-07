@@ -1,7 +1,8 @@
-#ifndef DOMAIN_H_
-#define DOMAIN_H_
+#ifndef AU_Util_h
+#define AU_Util_h
 
 #include "Arduino.h"
+#include "Log.h"
 
 void util_setup();
 void util_cycle();
@@ -24,4 +25,4 @@ void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols);
 
 void cpgm(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize);
 
-#endif /* DOMAIN_H_ */
+#endif /* AU_Util_h */

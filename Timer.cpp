@@ -1,9 +1,9 @@
 #include "Timer.h"
 
-const uint8_t TR_MS_SEC = 1000;
-const uint8_t TR_SEC_DD = 86400;
-const uint8_t TR_SEC_HH = 3600;
-const uint8_t TR_SEC_MM = 60;
+const static uint16_t TR_MS_SEC = 1000;
+const static uint32_t TR_SEC_DD = 86400;
+const static uint16_t TR_SEC_HH = 3600;
+const static uint16_t TR_SEC_MM = 60;
 
 void timer_sample(Time *ts) {
 	timer_sample(ts, 0);

@@ -1,5 +1,5 @@
-#ifndef Timer_H_
-#define Timer_H_
+#ifndef AU_Timer_h
+#define AU_Timer_h
 
 #include "Arduino.h"
 #include "Util.h"
@@ -19,4 +19,4 @@ void timer_sample(Time *ts, uint32_t startMilis);
 
 void timer_sample(Time *ts);
 
-#endif /* Timer_H_ */
+#endif /* AU_Timer_h */

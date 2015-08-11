@@ -9,8 +9,8 @@
 #define PRINT_FREE_RAM true
 #define LOG_DISABLED false
 
-const static uint8_t PGBUF_SIZE = 80;
-const static uint8_t SBUF_SIZE = 120;
+const static uint8_t PGBUF_SIZE = 100;
+const static uint8_t SBUF_SIZE = 150;
 
 void log_setup();
 void log_cycle();

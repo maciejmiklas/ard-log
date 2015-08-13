@@ -163,6 +163,14 @@ uint8_t** init2DArray8(uint8_t rows, uint8_t cols) {
 	return array;
 }
 
+void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols) {
+	for (uint8_t row = 0; row < rows; row++) {
+		for (uint8_t col = 0; col < cols; col++) {
+			array[row][col] = 0;
+		}
+	}
+}
+
 void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {
 	for (uint8_t row = 0; row < rows; row++) {
 		delete (array[row]);

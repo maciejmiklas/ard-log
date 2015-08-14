@@ -157,12 +157,16 @@ inline uint8_t** init2DArray8(uint8_t rows, uint8_t cols) {
 	return array;
 }
 
-inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols) {
-	for (uint8_t row = 0; row < rows; row++) {
-		for (uint8_t col = 0; col < cols; col++) {
+inline void clean2DArray8(uint8_t** array, uint8_t rowStart, uint8_t colStart, uint8_t rows, uint8_t cols) {
+	for (uint8_t row = rowStart; row < rows; row++) {
+		for (uint8_t col = colStart; col < cols; col++) {
 			array[row][col] = 0;
 		}
 	}
+}
+
+inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols) {
+	clean2DArray8(array, 0, 0, rows, cols);
 }
 
 inline void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {

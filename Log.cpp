@@ -23,7 +23,7 @@ void log_freeRAM(char const *msg) {
 	debug(F("Free RAM (%s): %u"), msg, free);
 }
 
-static inline void log_status() {
+static void log_status() {
 	uint16_t free = getFreeRam();
 	if (lastRam != free) {
 		lastRam = free;

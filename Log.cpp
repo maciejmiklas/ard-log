@@ -67,7 +67,7 @@ void debug(const __FlashStringHelper *ifsh, ...) {
 	reset_pgbuf();
 	reset_sbuf();
 
-	cpgm(ifsh, pgbuf, PGBUF_SIZE);
+	pgmCopy(ifsh, pgbuf, PGBUF_SIZE);
 	va_list va;
 	va_start(va, ifsh);
 	vsprintf(sbuf, pgbuf, va);

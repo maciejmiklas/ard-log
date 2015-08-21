@@ -8,7 +8,7 @@ void util_cycle();
 
 uint32_t ms();
 
-inline void sortu8(uint8_t arr[], uint8_t size) {
+inline void sort_t(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
 	for (i = 1; i < size; i++) {
 		temp = arr[i];
@@ -27,11 +27,11 @@ inline uint16_t getFreeRam() {
 	return (uint16_t) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
-inline uint16_t abs16(int16_t val) {
+inline uint16_t abs_t(int16_t val) {
 	return val > 0 ? val : val * -1;
 }
 
-inline uint8_t abs8(int8_t val) {
+inline uint8_t abs_t(int8_t val) {
 	return val > 0 ? val : val * -1;
 }
 
@@ -128,6 +128,10 @@ inline boolean checkBit(uint8_t byte, uint8_t bit) {
 	return byte & (1 << bit);
 }
 
+inline byte setBit(uint8_t byte, uint8_t bit) {
+	return byte | 1 << bit;
+}
+
 inline void fbyte(uint8_t byte, char *buf) {
 	uint8_t bit = 7;
 	for (uint8_t idx = 0; idx < 8; idx++) {
@@ -176,7 +180,7 @@ inline void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {
 	delete (array);
 }
 
-inline void cpgm(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) {
+inline void pgmCopy(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) {
 	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
 	unsigned char ch = 0;
 	for(uint8_t pgbufIdx = 0;pgbufIdx<bufSize;pgbufIdx++) {
@@ -187,4 +191,22 @@ inline void cpgm(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) 
 		}
 	}
 }
+
+inline void shiftL(uint8_t array[], uint8_t size) {
+	uint8_t sizel = size - 1;
+	for (uint8_t idx = 0; idx < size; idx++) {
+		uint8_t val = array[idx] << 1;
+
+		// carry over bit from next byte
+		if (idx < sizel) {
+			if (array[idx + 1] & 0x80) { // set last bit to 1
+				val |= 0x01;
+			} else { // clear last bit
+				val &= 0xFE;
+			}
+		}
+		array[idx] = val;
+	}
+}
+
 #endif /* AU_Util_h */

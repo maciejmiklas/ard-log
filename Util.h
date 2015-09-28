@@ -183,9 +183,9 @@ inline void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {
 inline void pgmCopy(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) {
 	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
 	unsigned char ch = 0;
-	for(uint8_t pgbufIdx = 0;pgbufIdx<bufSize;pgbufIdx++) {
+	for(uint8_t pgbufIdx = 0 ; pgbufIdx < bufSize ; pgbufIdx++) {
 		ch = pgm_read_byte(p++);
-		pgbuf[pgbufIdx]=ch;
+		pgbuf[pgbufIdx] = ch;
 		if(ch == 0) {
 			break;
 		}

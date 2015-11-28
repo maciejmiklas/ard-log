@@ -10,6 +10,10 @@ public:
 	virtual void init() = 0;
 	virtual ~StateMashine() = 0;
 
+	enum mstate_t {
+		STATE_NOCHANGE = 254, STATE_NOOP = 255
+	};
+
 protected:
 	StateMashine();
 };

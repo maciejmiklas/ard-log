@@ -173,7 +173,7 @@ inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols) {
 	clean2DArray8(array, 0, 0, rows, cols);
 }
 
-inline void delete2DArray(uint8_t **array, uint8_t rows, uint8_t cols) {
+inline void delete2DArray(uint8_t **array, uint8_t rows) {
 	for (uint8_t row = 0; row < rows; row++) {
 		delete (array[row]);
 	}

@@ -2,3 +2,6 @@
 
 StateMashine::StateMashine() {
 }
+
+StateMashine::~StateMashine() {
+}

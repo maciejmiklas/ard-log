@@ -16,7 +16,6 @@ void log_setup();
 void log_cycle();
 void log_freeRAM(char const *msg);
 
-//void debug(const char *fmt, ...);
-void debug(const __FlashStringHelper *ifsh, ...);
+void log(const __FlashStringHelper *ifsh, ...);
 
 #endif /* AU_Log_h */

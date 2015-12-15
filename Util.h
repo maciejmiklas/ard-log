@@ -8,7 +8,7 @@ void util_cycle();
 
 uint32_t ms();
 
-inline void sort_t(uint8_t arr[], uint8_t size) {
+inline void sort_8t(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
 	for (i = 1; i < size; i++) {
 		temp = arr[i];

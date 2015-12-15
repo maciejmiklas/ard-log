@@ -2,24 +2,19 @@
 #include "StateMashine.h"
 
 MachineDriver::MachineDriver(uint8_t statesCnt, ...) :
-		statesCnt(statesCnt) {
-	this->noopState = new MachineDriver::NoopState();
-	this->current = noopState;
+		statesCnt(statesCnt),noopState() {
+	this->current = &noopState;
 
 	states = new StateMashine*[statesCnt];
 	va_list va;
 	va_start(va, statesCnt);
 	for (uint8_t sIdx = 0; sIdx < statesCnt; sIdx++) {
-		states[sIdx] = va_arg(va, StateMashine *);
+		states[sIdx] = va_arg(va, StateMashine*);
 	}
 }
 
 MachineDriver::~MachineDriver() {
-	for (uint8_t sIdx = 0; sIdx < statesCnt; sIdx++) {
-		delete (states[sIdx]);
-	}
 	delete (states);
-	delete (noopState);
 }
 
 void MachineDriver::changeState(uint8_t state) {
@@ -32,7 +27,7 @@ void MachineDriver::changeState(uint8_t state) {
 		return;
 
 	case StateMashine::STATE_NOOP:
-		current = noopState;
+		current = &noopState;
 		break;
 
 	default:
@@ -44,7 +39,7 @@ void MachineDriver::changeState(uint8_t state) {
 }
 
 boolean MachineDriver::isRunning() {
-	return current != noopState;
+	return current != &noopState;
 }
 
 void MachineDriver::execute() {
@@ -54,6 +49,9 @@ void MachineDriver::execute() {
 
 // ################ NoopState ################
 MachineDriver::NoopState::NoopState() {
+}
+
+MachineDriver::NoopState::~NoopState() {
 }
 
 void MachineDriver::NoopState::init() {

@@ -15,19 +15,19 @@ void log_setup() {
 	pgbuf = new char[PGBUF_SIZE];
 
 	log_cycle();
-	debug(F("Logger initialized, free RAM: %u"), getFreeRam());
+	log(F("Logger initialized, free RAM: %u"), getFreeRam());
 }
 
 void log_freeRAM(char const *msg) {
 	uint16_t free = getFreeRam();
-	debug(F("Free RAM (%s): %u"), msg, free);
+	log(F("Free RAM (%s): %u"), msg, free);
 }
 
 static void log_status() {
 	uint16_t free = getFreeRam();
 	if (lastRam != free) {
 		lastRam = free;
-		debug(F("Status -> Free RAM: %u"), free);
+		log(F("Status -> Free RAM: %u"), free);
 	}
 }
 
@@ -54,7 +54,7 @@ void reset_pgbuf() {
 	}
 }
 
-void debug(const __FlashStringHelper *ifsh, ...) {
+void log(const __FlashStringHelper *ifsh, ...) {
 #if LOG_DISABLED
 	return;
 #endif

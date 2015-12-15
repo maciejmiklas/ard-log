@@ -50,10 +50,11 @@ private:
 	class NoopState: public StateMashine {
 	public:
 		NoopState();
+		virtual ~NoopState();
 		virtual uint8_t execute();
 		virtual void init();
 	};
-	NoopState *noopState;
+	NoopState noopState;
 };
 
 #endif /* MASHINEDRIVER_H_ */

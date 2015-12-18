@@ -2,6 +2,7 @@
 #define MASHINEDRIVER_H_
 
 #include "StateMashine.h"
+#include "Log.h"
 
 /**
  * Machine Driver orchestrates State Machines - it contains list of all possible states, executes and switches them.
@@ -37,8 +38,6 @@ public:
 	virtual ~MachineDriver();
 
 private:
-	/** Array of pointers to StateMashine obejcts.s */
-	StateMashine **states;
 	const uint8_t statesCnt;
 
 	/** Currently executed state. */
@@ -55,6 +54,9 @@ private:
 		virtual void init();
 	};
 	NoopState noopState;
+
+	/** Array of pointers to StateMashine obejcts.s */
+	StateMashine ** const states;
 };
 
 #endif /* MASHINEDRIVER_H_ */

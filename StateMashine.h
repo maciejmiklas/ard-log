@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG_SM false
+#define DEBUG_SM true
 
 /**
  * State Machine is stateful object that represents particular state. On each loop (MachineDriver#execute()) the method

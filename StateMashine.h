@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG_SM false
+#define LOG_SM false
 
 /**
  * State Machine is stateful object that represents particular state. On each loop (MachineDriver#execute()) the method
@@ -30,13 +30,22 @@ public:
 	 * example animating new sprite.
 	 */
 	virtual void reset() = 0;
+
+	/**
+	 * The execution of each state returns ID of next state, or no change. If state changes, the #execute() method of
+	 * new state will be executed by machine driver on next iteration (as next sprite frame). But some states have only
+	 * organizing propose - they redirect to another state without doing any useful job. In this case such state can
+	 * be marked as intermediate - when #execute() returns Id of new state, this state will be executed immediately and
+	 * not as usual on next iteration.
+	 */
+	virtual boolean isIntermediate() = 0;
 	virtual ~StateMashine() = 0;
 
 	/**
 	 * Predefined states.
 	 */
 	enum mstate_t {
-		STATE_NOCHANGE = 254, STATE_NOOP = 255
+		STATE_RESET = 253, STATE_NOCHANGE = 254, STATE_NOOP = 255
 	};
 
 protected:

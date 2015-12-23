@@ -19,25 +19,43 @@ public:
 
 	/**
 	 * Creates Machine Driver with number of states given by #states. The var-arg argument contains pointers to
-	 * implementation of #StateMashine. There are two rules that you have to follow:
+	 * implementation of #StateMashine. There are few rules that you have to follow:
 	 * 1) Amount of expected pointers is given by #states
 	 * 2) States are numbered starting from 0 to #states. In order to change state, function #changeState(uint8_t)
 	 *    takes an int argument and this is the state id determined by it's position in provided var-arg argument.
 	 *    For example:
 	 *    - if you have created the driver with 5 states, in order to change to last one execute #changeState(4)
 	 *    - in order to switch to predefined noop-state execute: #change(STATE_NOOP)
+	 * 3) State machine starts always from 0 state, also reseting switches to this state.
 	 */
 	MachineDriver(uint8_t states, ...);
 
 	/** returns true if current state is not noop. */
 	boolean isRunning();
 
+	/**
+	 * This method changes state and initializes it. In case of intermediate state, next state will be executed
+	 * immediately.
+	 */
 	void changeState(uint8_t state);
+
+	/**
+	 * This method pushes forward out machine driver. Witch each call current state is being executed and this state
+	 * becomes a chance to switch driver to follow up state.
+	 *
+	 * Each executed state returns id of next state to be executed. This method executes current state and calls
+	 * #changeState(stateId) with #stateId returned be the execution. This can lead to new state, but it's also
+	 * possible that method will return no-change. In this case current state can be executed again.
+	 */
 	void execute();
 
 	/**
-	 * This method resets whole workflow - this happens when state machine has to process completely new data. For
-	 * example animating new sprite.
+	 * This method resets whole work flow by:
+	 * 1) calling reset() on all states
+	 * 2) switching and initializing first state (technically speaking it's 0 index in states array).
+	 *
+	 * Reset  happens when state machine has to process completely new data. For example animating new sprite, or starts
+	 * playing animation from the beginning.
 	 */
 	void reset();
 
@@ -59,6 +77,7 @@ private:
 		virtual uint8_t execute();
 		virtual void init();
 		virtual void reset();
+		virtual boolean isIntermediate();
 	};
 	NoopState noopState;
 

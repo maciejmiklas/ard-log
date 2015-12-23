@@ -17,9 +17,6 @@ MachineDriver::~MachineDriver() {
 }
 
 void MachineDriver::changeState(uint8_t state) {
-#if DEBUG_SM
-	log(F("Change state to %d of %d"), state, statesCnt);
-#endif
 
 	switch (state) {
 	case StateMashine::STATE_NOCHANGE:
@@ -34,7 +31,16 @@ void MachineDriver::changeState(uint8_t state) {
 		break;
 	}
 
+#if DEBUG_SM
+	log(F("Change state to %d of %d"), state, statesCnt);
+#endif
+
 	current->init();
+}
+void MachineDriver::reset() {
+	for (uint8_t sIdx = 0; sIdx < statesCnt; sIdx++) {
+		states[sIdx]->reset();
+	}
 }
 
 boolean MachineDriver::isRunning() {
@@ -54,6 +60,9 @@ MachineDriver::NoopState::~NoopState() {
 }
 
 void MachineDriver::NoopState::init() {
+}
+
+void MachineDriver::NoopState::reset() {
 }
 
 uint8_t MachineDriver::NoopState::execute() {

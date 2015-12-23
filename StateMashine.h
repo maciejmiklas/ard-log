@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG_SM true
+#define DEBUG_SM false
 
 /**
  * State Machine is stateful object that represents particular state. On each loop (MachineDriver#execute()) the method
@@ -18,7 +18,18 @@ public:
 	 * be changed.
 	 */
 	virtual uint8_t execute() = 0;
+
+	/**
+	 * This method will be called always before switching to this state machine from another one. This can happen
+	 * multiple times during single workflow. For example: machine A switches to machine B, and after that B to A
+	 */
 	virtual void init() = 0;
+
+	/**
+	 * This method resets whole workflow - this happens when state machine has to process completely new data. For
+	 * example animating new sprite.
+	 */
+	virtual void reset() = 0;
 	virtual ~StateMashine() = 0;
 
 	/**

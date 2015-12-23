@@ -35,6 +35,12 @@ public:
 	void changeState(uint8_t state);
 	void execute();
 
+	/**
+	 * This method resets whole workflow - this happens when state machine has to process completely new data. For
+	 * example animating new sprite.
+	 */
+	void reset();
+
 	virtual ~MachineDriver();
 
 private:
@@ -52,6 +58,7 @@ private:
 		virtual ~NoopState();
 		virtual uint8_t execute();
 		virtual void init();
+		virtual void reset();
 	};
 	NoopState noopState;
 

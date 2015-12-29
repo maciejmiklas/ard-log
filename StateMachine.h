@@ -6,11 +6,11 @@
 #define LOG_SM false
 
 /**
- * State Machine is stateful object that represents particular state. On each loop (MachineDriver#execute()) the method
- * #execute() will be called - until in returns next state. In this case the next State Machine will get executed,...
- * an so on.
+ * State Machine is state full object that represents particular state. On each loop (MachineDriver#execute()) the
+ * method #execute() will be called - until in returns next state. In this case the next State Machine will get
+ * executed,... an so on.
  */
-class StateMashine {
+class StateMachine {
 
 public:
 	/**
@@ -39,17 +39,24 @@ public:
 	 * not as usual on next iteration.
 	 */
 	virtual boolean isIntermediate() = 0;
-	virtual ~StateMashine() = 0;
+	virtual ~StateMachine() = 0;
 
 	/**
 	 * Predefined states.
 	 */
 	enum mstate_t {
-		STATE_RESET = 253, STATE_NOCHANGE = 254, STATE_NOOP = 255
+		/** Resets all states and starts from first one */
+		STATE_RESET = 253,
+
+		/** Indicates that actual state should continue to execute. */
+		STATE_NOCHANGE = 254,
+
+		/** Select state that does nothing and never ends. */
+		STATE_NOOP = 255
 	};
 
 protected:
-	StateMashine();
+	StateMachine();
 };
 
 #endif /* STATEMASHINE_H_ */

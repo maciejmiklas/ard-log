@@ -1,14 +1,14 @@
 #include "MachineDriver.h"
-#include "StateMashine.h"
+#include "StateMachine.h"
 
 MachineDriver::MachineDriver(uint8_t statesCnt, ...) :
-		statesCnt(statesCnt), noopState(), states(new StateMashine*[statesCnt]) {
+		statesCnt(statesCnt), noopState(), states(new StateMachine*[statesCnt]) {
 	this->current = &noopState;
 
 	va_list va;
 	va_start(va, statesCnt);
 	for (uint8_t sIdx = 0; sIdx < statesCnt; sIdx++) {
-		states[sIdx] = va_arg(va, StateMashine*);
+		states[sIdx] = va_arg(va, StateMachine*);
 	}
 }
 
@@ -17,7 +17,7 @@ MachineDriver::~MachineDriver() {
 }
 
 void MachineDriver::changeState(uint8_t state) {
-	if (state == StateMashine::STATE_NOCHANGE) {
+	if (state == StateMachine::STATE_NOCHANGE) {
 		return;
 	}
 
@@ -27,12 +27,12 @@ void MachineDriver::changeState(uint8_t state) {
 
 	boolean init = true;
 	switch (state) {
-	case StateMashine::STATE_RESET:
+	case StateMachine::STATE_RESET:
 		reset();
 		init = false;
 		break;
 
-	case StateMashine::STATE_NOOP:
+	case StateMachine::STATE_NOOP:
 		current = &noopState;
 		break;
 
@@ -89,6 +89,6 @@ boolean MachineDriver::NoopState::isIntermediate() {
 }
 
 uint8_t MachineDriver::NoopState::execute() {
-	return StateMashine::STATE_NOCHANGE;
+	return StateMachine::STATE_NOCHANGE;
 }
 

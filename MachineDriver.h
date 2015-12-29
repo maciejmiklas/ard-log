@@ -1,7 +1,7 @@
 #ifndef MASHINEDRIVER_H_
 #define MASHINEDRIVER_H_
 
-#include "StateMashine.h"
+#include "StateMachine.h"
 #include "Log.h"
 
 /**
@@ -11,7 +11,7 @@
  * should execute current state again.
  *
  * Each state has it's own ID and there can be up to 0-240 states - last 15 are reserved for predefined states. The are
- * defined in StateMashine#mstate_t.
+ * defined in StateMachine#mstate_t.
  */
 class MachineDriver {
 
@@ -19,7 +19,7 @@ public:
 
 	/**
 	 * Creates Machine Driver with number of states given by #states. The var-arg argument contains pointers to
-	 * implementation of #StateMashine. There are few rules that you have to follow:
+	 * implementation of #StateMachine. There are few rules that you have to follow:
 	 * 1) Amount of expected pointers is given by #states
 	 * 2) States are numbered starting from 0 to #states. In order to change state, function #changeState(uint8_t)
 	 *    takes an int argument and this is the state id determined by it's position in provided var-arg argument.
@@ -65,12 +65,12 @@ private:
 	const uint8_t statesCnt;
 
 	/** Currently executed state. */
-	StateMashine *current;
+	StateMachine *current;
 
 	/**
 	 * Does nothing ;)
 	 */
-	class NoopState: public StateMashine {
+	class NoopState: public StateMachine {
 	public:
 		NoopState();
 		virtual ~NoopState();
@@ -81,8 +81,8 @@ private:
 	};
 	NoopState noopState;
 
-	/** Array of pointers to StateMashine obejcts.s */
-	StateMashine ** const states;
+	/** Array of pointers to StateMachine obejcts.s */
+	StateMachine ** const states;
 };
 
 #endif /* MASHINEDRIVER_H_ */

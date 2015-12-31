@@ -9,7 +9,7 @@ void util_cycle();
 
 uint32_t ms();
 
-inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols);
+inline void clean2DArray8(uint8_t **array, uint8_t rows, uint8_t cols);
 
 inline void sort_8t(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
@@ -142,7 +142,7 @@ inline void fbyte(uint8_t byte, char *buf) {
 		bit--;
 	}
 
-	buf[8] = NULL;
+	buf[8] = '\0';
 }
 
 /**
@@ -164,12 +164,12 @@ inline uint8_t** init2DArray8(uint8_t rows, uint8_t cols) {
 	return array;
 }
 
-inline void delete2DArray8(uint8_t** array) {
+inline void delete2DArray8(uint8_t **array) {
 	free(array[0]);
 	free(array);
 }
 
-inline void clean2DArray8(uint8_t** array, uint8_t rowStart, uint8_t colStart, uint8_t rows, uint8_t cols) {
+inline void clean2DArray8(uint8_t **array, uint8_t rowStart, uint8_t colStart, uint8_t rows, uint8_t cols) {
 	for (uint8_t row = rowStart; row < rows; row++) {
 		for (uint8_t col = colStart; col < cols; col++) {
 			array[row][col] = 0;
@@ -177,11 +177,11 @@ inline void clean2DArray8(uint8_t** array, uint8_t rowStart, uint8_t colStart, u
 	}
 }
 
-inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols) {
+inline void clean2DArray8(uint8_t **array, uint8_t rows, uint8_t cols) {
 	clean2DArray8(array, 0, 0, rows, cols);
 }
 
-inline void pgmCopy(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) {
+inline void pgmCopy(const __FlashStringHelper *ifsh, char *pgbuf, uint8_t bufSize) {
 	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
 	unsigned char ch = 0;
 	for(uint8_t pgbufIdx = 0; pgbufIdx < bufSize; pgbufIdx++) {

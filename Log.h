@@ -7,7 +7,7 @@
 #include "Util.h"
 
 #define PRINT_FREE_RAM true
-#define LOG_DISABLED false
+#define LOG_DISABLED true
 
 const static uint8_t PGBUF_SIZE = 100;
 const static uint8_t SBUF_SIZE = 150;

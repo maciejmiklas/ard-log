@@ -2,11 +2,14 @@
 #define AU_Util_h
 
 #include "Arduino.h"
+#include "Log.h"
 
 void util_setup();
 void util_cycle();
 
 uint32_t ms();
+
+inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols);
 
 inline void sort_8t(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
@@ -142,23 +145,28 @@ inline void fbyte(uint8_t byte, char *buf) {
 	buf[8] = NULL;
 }
 
+/**
+ * Creates 2D array using continuous memory space.
+ */
 inline uint8_t** alloc2DArray8(uint8_t rows, uint8_t cols) {
-	uint8_t **array = new uint8_t*[rows];
-	for (uint8_t row = 0; row < rows; row++) {
-		array[row] = new uint8_t[cols];
+	uint8_t **array = (uint8_t **) malloc(sizeof(uint8_t *) * rows);
+	array[0] = (uint8_t*) malloc(sizeof(uint8_t) * rows * cols);
+
+	for (uint8_t row = 1; row < rows; row++) {
+		array[row] = (*array + cols * row);
 	}
 	return array;
 }
 
 inline uint8_t** init2DArray8(uint8_t rows, uint8_t cols) {
-	uint8_t **array = new uint8_t*[rows];
-	for (uint8_t row = 0; row < rows; row++) {
-		array[row] = new uint8_t[cols];
-		for (uint8_t col = 0; col < cols; col++) {
-			array[row][col] = 0;
-		}
-	}
+	uint8_t **array = alloc2DArray8(rows, cols);
+	clean2DArray8(array, rows, cols);
 	return array;
+}
+
+inline void delete2DArray8(uint8_t** array) {
+	free(array[0]);
+	free(array);
 }
 
 inline void clean2DArray8(uint8_t** array, uint8_t rowStart, uint8_t colStart, uint8_t rows, uint8_t cols) {
@@ -173,17 +181,10 @@ inline void clean2DArray8(uint8_t** array, uint8_t rows, uint8_t cols) {
 	clean2DArray8(array, 0, 0, rows, cols);
 }
 
-inline void delete2DArray(uint8_t **array, uint8_t rows) {
-	for (uint8_t row = 0; row < rows; row++) {
-		delete (array[row]);
-	}
-	delete (array);
-}
-
 inline void pgmCopy(const __FlashStringHelper *ifsh, char* pgbuf, uint8_t bufSize) {
 	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
 	unsigned char ch = 0;
-	for(uint8_t pgbufIdx = 0 ; pgbufIdx < bufSize ; pgbufIdx++) {
+	for(uint8_t pgbufIdx = 0; pgbufIdx < bufSize; pgbufIdx++) {
 		ch = pgm_read_byte(p++);
 		pgbuf[pgbufIdx] = ch;
 		if(ch == 0) {

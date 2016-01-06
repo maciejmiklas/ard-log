@@ -1,4 +1,4 @@
-#include "Timer.h"
+#include "ArdTimer.h"
 
 const static uint16_t TR_MS_SEC = 1000;
 const static uint32_t TR_SEC_DD = 86400;

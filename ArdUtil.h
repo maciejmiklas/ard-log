@@ -1,8 +1,8 @@
-#ifndef AU_Util_h
-#define AU_Util_h
+#ifndef ARD_UTIL_H
+#define ARD_UTIL_H
 
 #include "Arduino.h"
-#include "Log.h"
+#include "ArdLog.h"
 
 void util_setup();
 void util_cycle();
@@ -210,4 +210,4 @@ inline void shiftL(uint8_t array[], uint8_t size) {
 	}
 }
 
-#endif /* AU_Util_h */
+#endif /* ARD_UTIL_H */

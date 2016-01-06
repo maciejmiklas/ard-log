@@ -1,8 +1,8 @@
-#ifndef AU_Timer_h
-#define AU_Timer_h
+#ifndef ARD_TIMER_H
+#define ARD_TIMER_H
 
 #include "Arduino.h"
-#include "Util.h"
+#include "ArdUtil.h"
 
 typedef struct {
 	uint16_t dd;
@@ -19,4 +19,4 @@ void timer_sample(Time *ts, uint32_t startMilis);
 
 void timer_sample(Time *ts);
 
-#endif /* AU_Timer_h */
+#endif /* ARD_TIMER_H */

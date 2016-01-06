@@ -2,7 +2,7 @@
 #define MASHINEDRIVER_H_
 
 #include "StateMachine.h"
-#include "Log.h"
+#include "ArdLog.h"
 
 /**
  * Machine Driver orchestrates State Machines - it contains list of all possible states, executes and switches them.

@@ -1,7 +1,7 @@
 This project contains few utility classes for Arduino projects. 
 
 # Cached access to *millis()*
-Function *millis()* needs few CPU cycles and sometimes we have to access it multiple times within single main-loop. The idea is to read value returned by *millis()* and the beginning of each loop iteration, store returned value in global variable and access this stored value instead of calling original function.
+Function *millis()* needs few CPU cycles and sometimes we have to access it multiple times within single main-loop. The idea is to read value returned by *millis()* at the beginning of each iteration, store returned value in global variable and access this stored value instead of calling original function.
 
 *ms()* provides access to cached value.
 
@@ -31,7 +31,7 @@ void loop() {
 
 # Logger over Serial port
 The logger allows you to log formatted messages over Serial:
-* Logger is disabled by default, in order to enable it set LOG_DISABLED* to true in *ArdLog.h*.
+* Logger is disabled by default, in order to enable it set *LOG_DISABLED* to true in *ArdLog.h*.
 * Each message has timestamp.
 * Each message within single loop has the same timestamp, so that you can logically connect activities together.
 * Messages can be formatted using *sprint* syntax

@@ -31,7 +31,7 @@ void loop() {
 
 # Logger over Serial port
 The logger allows you to log formatted messages over Serial:
-* Logger is disabled by default, in order to enable it set *LOG_DISABLED* to true in *ArdLog.h*.
+* Logger is disabled by default, in order to enable it set *LOG_DISABLED* in *ArdLog.h* to true.
 * Each message has timestamp.
 * Each message within single loop has the same timestamp, so that you can logically connect activities together.
 * Messages can be formatted using *sprint* syntax
@@ -54,7 +54,7 @@ void loop() {
   
   loopIdex++;
 
-  log(F("\n**** Loop %d ****"), loopIdex);
+  log(F("**** Loop %d ****"), loopIdex);
   
   uint32_t t1 = ms();
   log(F("T1 = %ld"), t1);
@@ -77,23 +77,19 @@ This is output created by example above:
 >>[000-00:00:00,000]-> Status -> Free RAM: 7660
 >>[000-00:00:00,000]-> Logger initialized, free RAM: 7667
 >>[000-00:00:00,004]-> Status -> Free RAM: 7654
->>[000-00:00:00,004]-> 
-**** Loop 1 ****
+>>[000-00:00:00,004]-> **** Loop 1 ****
 >>[000-00:00:00,004]-> T1 = 4
 >>[000-00:00:00,004]-> T2 = 4
 >>[000-00:00:00,004]-> T1 == T2
->>[000-00:00:01,116]-> 
-**** Loop 2 ****
+>>[000-00:00:01,116]-> **** Loop 2 ****
 >>[000-00:00:01,116]-> T1 = 1116
 >>[000-00:00:01,116]-> T2 = 1116
 >>[000-00:00:01,116]-> T1 == T2
->>[000-00:00:02,220]-> 
-**** Loop 3 ****
+>>[000-00:00:02,220]-> **** Loop 3 ****
 >>[000-00:00:02,220]-> T1 = 2220
 >>[000-00:00:02,220]-> T2 = 2220
 >>[000-00:00:02,220]-> T1 == T2
->>[000-00:00:03,323]-> 
-**** Loop 4 ****
+>>[000-00:00:03,323]-> **** Loop 4 ****
 >>[000-00:00:03,323]-> T1 = 3323
 >>[000-00:00:03,323]-> T2 = 3323
 >>[000-00:00:03,323]-> T1 == T2

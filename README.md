@@ -34,20 +34,20 @@ void loop() {
   
   uint32_t t1 = ms();
   
-#if LOG
-  log(F("T1 = %ld"), t1);
-#endif
+  #if LOG
+    log(F("T1 = %ld"), t1);
+  #endif
 
   delay(100);
   uint32_t t2 = ms();
-#if LOG
-  log(F("T2 = %ld"), t2);
-#endif
+  #if LOG
+    log(F("T2 = %ld"), t2);
+  #endif
 
   if(t1 == t2){
-#if LOG
-     log(F("T1 == T2"));
-#endif     
+    #if LOG
+      log(F("T1 == T2"));
+    #endif     
   }
   delay(1000);
 }

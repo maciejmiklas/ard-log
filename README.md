@@ -34,14 +34,14 @@ void loop() {
     log(F("**** Loop %d ****"), loopIdex);
   #endif
   
-  uint32_t t1 = ms();
+  uint32_t t1 = millis();
   
   #if LOG
     log(F("T1 = %ld"), t1);
   #endif
 
   delay(100);
-  uint32_t t2 = ms();
+  uint32_t t2 = millis();
   
   #if LOG
     log(F("T2 = %ld"), t2);

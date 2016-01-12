@@ -1,41 +1,19 @@
-This project contains few utility classes for Arduino projects. 
-
-# Cached access to *millis()*
-Function *millis()* needs few CPU cycles and sometimes we have to access it multiple times within single main-loop. The idea is to read value returned by *millis()* at the beginning of each iteration, store returned value in global variable and access this stored value instead of calling original function.
-
-*ms()* provides access to cached value.
-
-This also means, that *ms()* returns always the same vale within single iteration.
-
-```cpp
-#include <ArdUtil.h>
-
-void setup() {
-  util_setup();
-}
-
-void loop() {
-  util_cycle();
-  
-  uint32_t t1 = ms();
-  delay(100);
-  uint32_t t2 = ms();
-  
-  if(t1 == t2){
-  // this is always true
-  }
-}
-
-```
-
-
-# Logger over Serial port
-The logger allows you to log formatted messages over Serial:
-* Logger is disabled by default, in order to enable it set *LOG_DISABLED* in *ArdLog.h* to true.
+This project contains logger for Arduino that creates formatted messages over Serial:
 * Each message has timestamp.
 * Each message within single loop has the same timestamp, so that you can logically connect activities together.
 * Messages can be formatted using *sprint* syntax
 * Text for the messages is being held in PROGMEM
+
+# Configuration
+* Logger is disabled by default, in order to enable it set *LOG* in *ArdLog.h* to true.
+* Messages are created over Serial. You can choose alternative serial ports by setting: *USE_SERIAL_1*, *USE_SERIAL_2* or *USE_SERIAL_3* to true in  *ArdLog.h*.
+* In order to print current time for each message set *USE_CURRENT_TIME* in *ArdLog.h* to true. By default logger will sample time only once at the beginning of each loop.
+
+# Getting up an running
+1. Choose suitable configuration in *ArdLog.h*.
+2. Call *log_setup()* in *setup()* method - this will initialize logger variables and Serial.
+3. Call  *log_cycle()* at the beginning of each *loop()* - this will sample current time.
+4. Put log messages into *#if LOG log(F("....") #endif* - once logger is disabled, it will not waste RAM and CUP.
 
 ```cpp
 #include <ArdUtil.h>
@@ -44,12 +22,10 @@ The logger allows you to log formatted messages over Serial:
 uint16_t loopIdex = 0;
 
 void setup() {
-  util_setup();
   log_setup();
 }
 
 void loop() {
-  util_cycle();
   log_cycle();
   
   loopIdex++;
@@ -57,13 +33,17 @@ void loop() {
   log(F("**** Loop %d ****"), loopIdex);
   
   uint32_t t1 = ms();
-  log(F("T1 = %ld"), t1);
   
+#if LOG
+  log(F("T1 = %ld"), t1);
+#endif
+
   delay(100);
   uint32_t t2 = ms();
-
+#if LOG
   log(F("T2 = %ld"), t2);
-  
+#endif
+
   if(t1 == t2){
      log(F("T1 == T2"));
   }

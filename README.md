@@ -1,8 +1,8 @@
-This project contains logger for Arduino that creates formatted messages over Serial:
+ArdLog serves as simle logger for Arduino which creates formatted messages over Serial:
 * Each message has timestamp.
 * Each message within single loop has the same timestamp, so that you can logically connect activities together.
-* Messages can be formatted using *sprint* syntax
-* Text for the messages is being held in PROGMEM
+* Messages can be formatted using *sprint* syntax.
+* Text for the messages is being held in PROGMEM.
 
 # Configuration
 * Logger is disabled by default, in order to enable it set *LOG* in *ArdLog.h* to true.

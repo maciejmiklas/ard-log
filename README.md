@@ -11,7 +11,7 @@ ArdLog serves as simle logger for Arduino which creates formatted messages over 
 
 # Getting up an running
 1. Choose suitable configuration in *ArdLog.h*. In most cases you have to only set *LOG* in *ArdLog.h* to true.
-2. Call *log_setup()* in *setup()* method - this will initialize logger variables and Serial.
+2. Call *log_setup()* in *setup()* method - this will initialize logger variables and serial port.
 3. Call  *log_cycle()* at the beginning of each *loop()* - this will sample current time.
 4. Put log messages into *#if LOG log(F("....") #endif* - once logger is disabled, it will not waste RAM and CUP.
 

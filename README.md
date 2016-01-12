@@ -30,7 +30,9 @@ void loop() {
   
   loopIdex++;
 
-  log(F("**** Loop %d ****"), loopIdex);
+  #if LOG
+    log(F("**** Loop %d ****"), loopIdex);
+  #endif
   
   uint32_t t1 = ms();
   
@@ -40,6 +42,7 @@ void loop() {
 
   delay(100);
   uint32_t t2 = ms();
+  
   #if LOG
     log(F("T2 = %ld"), t2);
   #endif

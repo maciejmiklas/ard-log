@@ -16,7 +16,6 @@ ArdLog serves as simle logger for Arduino which creates formatted messages over 
 4. Put log messages into *#if LOG log(F("....") #endif* - once logger is disabled, it will not waste RAM and CUP.
 
 ```cpp
-#include <ArdUtil.h>
 #include <ArdLog.h>
 
 uint16_t loopIdex = 0;

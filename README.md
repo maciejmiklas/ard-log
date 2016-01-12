@@ -45,7 +45,9 @@ void loop() {
 #endif
 
   if(t1 == t2){
+#if LOG
      log(F("T1 == T2"));
+#endif     
   }
   delay(1000);
 }

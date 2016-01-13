@@ -26,34 +26,22 @@ void setup() {
 
 void loop() {
   log_cycle();
-  
+
   loopIdex++;
 
   #if LOG
     log(F("**** Loop %d ****"), loopIdex);
-  #endif
-  
-  uint32_t t1 = millis();
-  
-  #if LOG
-    log(F("T1 = %ld"), t1);
+    log(F("T1 = %ld"), millis());
   #endif
 
   delay(100);
-  uint32_t t2 = millis();
-  
+
   #if LOG
-    log(F("T2 = %ld"), t2);
+    log(F("T2 = %ld"), millis());
   #endif
 
-  if(t1 == t2){
-    #if LOG
-      log(F("T1 == T2"));
-    #endif     
-  }
   delay(1000);
 }
-
 ```
 
 This is output created by example above:
@@ -75,6 +63,4 @@ This is output created by example above:
 >>[000-00:00:04,422]-> **** Loop 5 ****
 >>[000-00:00:04,422]-> T1 = 4423
 >>[000-00:00:04,422]-> T2 = 4525
-
 ```
-

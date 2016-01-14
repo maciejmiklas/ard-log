@@ -4,7 +4,10 @@
 #include "Arduino.h"
 #include "stdarg.h"
 
+/** Logs free RAM if it has changed on every log_cycle() call. */
 #define PRINT_FREE_RAM true
+
+/** Enables loger. */
 #define LOG false
 
 /**
@@ -20,7 +23,10 @@
 #define USE_SERIAL_2 false
 #define USE_SERIAL_3 false
 
+/** Buffer size for sprintf-template passed as first argument to log method. */
 const static uint8_t PGBUF_SIZE = 100;
+
+/** Buffer size for created message. */
 const static uint8_t SBUF_SIZE = 150;
 
 void log_setup();

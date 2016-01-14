@@ -4,10 +4,10 @@ ArdLog serves as simle logger for Arduino that creates formatted messages over S
 * Messages can be formatted using *sprintf* syntax.
 * Text for the messages is being held in PROGMEM.
 
-# Configuration
-* Logger is disabled by default, in order to enable it set *LOG* in *ArdLog.h* to true.
-* Messages are created over default Serial port. You can choose alternative port by setting: *USE_SERIAL_1*, *USE_SERIAL_2* or *USE_SERIAL_3* to true in  *ArdLog.h*.
-* In order to print current time for each message set *USE_CURRENT_TIME* in *ArdLog.h* to true. By default logger will sample time only once at the beginning of each loop.
+# Configuration (*ArdLog.h*)
+* Logger is disabled by default, in order to enable it set *LOG* to true.
+* Messages are created over default Serial port. You can choose alternative port by setting: *USE_SERIAL_1*, *USE_SERIAL_2* or *USE_SERIAL_3* to true.
+* In order to print current time for each message set *USE_CURRENT_TIME* to true. By default logger will sample time only once at the beginning of each loop.
 
 # Getting up an running
 1. Choose suitable configuration in *ArdLog.h*. In most cases you have to only set *LOG* to true.

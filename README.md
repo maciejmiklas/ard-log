@@ -1,7 +1,7 @@
 ArdLog serves as simle logger for Arduino that creates formatted messages over Serial:
 * Each message has timestamp.
 * Each message within single loop has the same timestamp, so that you can logically connect activities together.
-* Messages can be formatted using *sprint* syntax.
+* Messages can be formatted using *sprintf* syntax.
 * Text for the messages is being held in PROGMEM.
 
 # Configuration

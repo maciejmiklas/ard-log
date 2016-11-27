@@ -26,12 +26,12 @@ static struct Time {
 
 static uint16_t lastRam = 0;
 
-#if LOG
+#if ENABLE_LOGGER
 /** Buffer for created message */
-static char sbuf[SBUF_SIZE] = {0};
+static char sbuf[SBUF_SIZE] = { 0 };
 
 /** Buffer for sprintf-template passed as first argument to log method. */
-static char pgbuf[PGBUF_SIZE] = {0};
+static char pgbuf[PGBUF_SIZE] = { 0 };
 #endif
 
 const static uint16_t TR_MS_SEC = 1000;
@@ -47,39 +47,80 @@ static inline void freeRAM();
 static inline uint16_t getFreeRam();
 static inline void sampleTime();
 
-void log_setup() {	
-#if LOG
+void log_setup() {
+#if ENABLE_LOGGER
 	serial().begin(115200);
 	log_cycle();
-	log(F("Logger initialized, free RAM: %u"), getFreeRam());
+	log(F("LOG ON,RAM:%u"), getFreeRam());
 #endif
 }
 
 void log_freeRAM(char const *msg) {
 	uint16_t free = getFreeRam();
-	log(F("Free RAM (%s): %u"), msg, free);
+	log(F("RAM(%s):%u"), msg, free);
 }
 
 void log_cycle() {
-#if LOG
+#if ENABLE_LOGGER
 	sampleTime();
-
 #if PRINT_FREE_RAM
 	freeRAM();
 #endif
 #endif
 }
 
+void logs(const char* msg, uint8_t size) {
+#if ENABLE_LOGGER
+	HardwareSerial &ser = serial();
+	ser.write(msg, size);
+	ser.print('\n');
+#endif
+}
+
+void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size) {
+#if ENABLE_LOGGER
+	HardwareSerial &ser = serial();
+	reset_sbuf();
+	pgmCopy(ifsh);
+	ser.print(pgbuf);
+	msg[size - 1] = '\0';
+	ser.write(msg);
+	ser.print('\n');
+#endif
+}
+
+void logc(char val) {
+	HardwareSerial &ser = serial();
+	ser.print(val);
+}
+
+void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size) {
+#if ENABLE_LOGGER
+	HardwareSerial &ser = serial();
+
+	reset_sbuf();
+	pgmCopy(ifsh);
+	ser.print(pgbuf);
+	ser.write(msg, size);
+	ser.print('\n');
+#endif
+}
+
 void log(const __FlashStringHelper *ifsh, ...) {
-#if LOG
+#if ENABLE_LOGGER
 #if USE_CURRENT_TIME
 	sampleTime();
 #endif
 
 	HardwareSerial &ser = serial();
-	// print time
 	reset_sbuf();
-	sprintf(sbuf, ">>[%03u-%02u:%02u:%02u,%03u]-> ", ts.dd, ts.hh, ts.mm, ts.ss, ts.ml);
+#if LOG_FULL_TIME
+	sprintf(sbuf, ">[%03u-%02u:%02u:%02u,%03u]>", ts.dd, ts.hh, ts.mm, ts.ss, ts.ml);
+#endif
+
+#if LOG_MIN_TIME
+	sprintf(sbuf, ">[%02u:%02u,%03u]>", ts.mm, ts.ss, ts.ml);
+#endif
 	ser.print(sbuf);
 
 	// print the message
@@ -92,10 +133,8 @@ void log(const __FlashStringHelper *ifsh, ...) {
 	vsprintf(sbuf, pgbuf, va);
 	va_end(va);
 	ser.println(sbuf);
-
 #endif
 }
-
 // ###########################################################
 // ### Private methods
 // ###########################################################
@@ -152,20 +191,21 @@ static inline void freeRAM() {
 	uint16_t free = getFreeRam();
 	if (lastRam != free) {
 		lastRam = free;
-		log(F("Free RAM: %u"), free);
+		log(F("RAM:%u"), free);
 	}
 }
 
 static inline void reset_sbuf() {
-#if LOG
+#if ENABLE_LOGGER
 	for (uint8_t idx = 0; idx < SBUF_SIZE; idx++) {
-		sbuf[idx] = 0;
+		sbuf[idx] = ' ';
 	}
+	sbuf[SBUF_SIZE - 1] = '\0';
 #endif
 }
 
 static inline void reset_pgbuf() {
-#if LOG
+#if ENABLE_LOGGER
 	for (uint8_t idx = 0; idx < PGBUF_SIZE; idx++) {
 		pgbuf[idx] = 0;
 	}
@@ -173,7 +213,7 @@ static inline void reset_pgbuf() {
 }
 
 static inline void pgmCopy(const __FlashStringHelper *ifsh) {
-#if LOG
+#if ENABLE_LOGGER
 	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
 	unsigned char ch = 0;
 	for(uint8_t pgbufIdx = 0; pgbufIdx < PGBUF_SIZE; pgbufIdx++) {

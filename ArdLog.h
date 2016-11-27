@@ -23,8 +23,18 @@
 /** Logs free RAM if it has changed on every log_cycle() call. */
 #define PRINT_FREE_RAM true
 
-/** Enables loger. */
+/** Enables logger so taht it can log over serial port. */
+#define ENABLE_LOGGER true
+
+/** Enables log on Deug level. */
 #define LOG false
+
+/** Enables log on Trace level. */
+#define TRACE false
+
+/** Log full time, or shorter version */
+#define LOG_FULL_TIME false
+#define LOG_MIN_TIME true
 
 /**
  * True will get current time on each call on log(), otherwise we will get one sample for each log_cycle() and
@@ -40,15 +50,19 @@
 #define USE_SERIAL_3 false
 
 /** Buffer size for sprintf-template passed as first argument to log method. */
-const static uint8_t PGBUF_SIZE = 100;
+const static uint8_t PGBUF_SIZE = 32;
 
 /** Buffer size for created message. */
-const static uint8_t SBUF_SIZE = 150;
+const static uint8_t SBUF_SIZE = 96;
 
 void log_setup();
 void log_cycle();
 
 void log_freeRAM(char const *msg);
 void log(const __FlashStringHelper *ifsh, ...);
+void logc(char val);
+void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size);
+void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size);
+void logs(const char* msg, uint8_t size);
 
 #endif /* ARD_LOG_H */

@@ -55,6 +55,8 @@ const static uint8_t PGBUF_SIZE = 32;
 /** Buffer size for created message. */
 const static uint8_t SBUF_SIZE = 96;
 
+const static uint32_t SERIAL_SPEED = 115200;
+
 void log_setup();
 void log_cycle();
 

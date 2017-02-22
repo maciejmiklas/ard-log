@@ -49,7 +49,7 @@ static inline void sampleTime();
 
 void log_setup() {
 #if ENABLE_LOGGER
-	serial().begin(115200);
+	serial().begin(SERIAL_SPEED);
 	log_cycle();
 	log(F("LOG ON,RAM:%u"), getFreeRam());
 #endif

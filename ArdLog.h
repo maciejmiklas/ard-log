@@ -21,20 +21,20 @@
 #include "stdarg.h"
 
 /** Logs free RAM if it has changed on every log_cycle() call. */
-#define PRINT_FREE_RAM true
+#define PRINT_FREE_RAM false
 
 /** Enables logger so taht it can log over serial port. */
 #define ENABLE_LOGGER true
 
 /** Enables log on Deug level. */
-#define LOG false
+#define LOG true
 
 /** Enables log on Trace level. */
-#define TRACE false
+#define TRACE true
 
 /** Log full time, or shorter version */
 #define LOG_FULL_TIME false
-#define LOG_MIN_TIME true
+#define LOG_MIN_TIME false
 
 /**
  * True will get current time on each call on log(), otherwise we will get one sample for each log_cycle() and
@@ -50,10 +50,10 @@
 #define USE_SERIAL_3 false
 
 /** Buffer size for sprintf-template passed as first argument to log method. */
-const static uint8_t PGBUF_SIZE = 32;
+const static uint8_t PGBUF_SIZE = 64;
 
 /** Buffer size for created message. */
-const static uint8_t SBUF_SIZE = 96;
+const static uint8_t SBUF_SIZE = 128;
 
 const static uint32_t SERIAL_SPEED = 115200;
 

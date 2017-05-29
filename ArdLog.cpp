@@ -16,6 +16,8 @@
  */
 #include "ArdLog.h"
 
+
+#if ENABLE_LOGGER
 static struct Time {
 	uint16_t dd;
 	uint8_t hh;
@@ -26,13 +28,11 @@ static struct Time {
 
 static uint16_t lastRam = 0;
 
-#if ENABLE_LOGGER
 /** Buffer for created message */
 static char sbuf[SBUF_SIZE] = { 0 };
 
 /** Buffer for sprintf-template passed as first argument to log method. */
 static char pgbuf[PGBUF_SIZE] = { 0 };
-#endif
 
 const static uint16_t TR_MS_SEC = 1000;
 const static uint32_t TR_SEC_DD = 86400;
@@ -43,9 +43,11 @@ static inline HardwareSerial& serial();
 static inline void pgmCopy(const __FlashStringHelper *ifsh);
 static inline void reset_pgbuf();
 static inline void reset_sbuf();
+static inline void resetbuf(char *buf, uint8_t size);
 static inline void freeRAM();
 static inline uint16_t getFreeRam();
 static inline void sampleTime();
+#endif
 
 void log_setup() {
 #if ENABLE_LOGGER
@@ -56,12 +58,14 @@ void log_setup() {
 }
 
 void log_freeRAM(char const *msg) {
+#if ENABLE_LOGGER
 	uint16_t free = getFreeRam();
 	log(F("RAM(%s):%u"), msg, free);
+#endif
 }
 
 void log_cycle() {
-#if ENABLE_LOGGER
+#if ENABLE_LOGGER_
 	sampleTime();
 #if PRINT_FREE_RAM
 	freeRAM();
@@ -70,7 +74,7 @@ void log_cycle() {
 }
 
 void logs(const char* msg, uint8_t size) {
-#if ENABLE_LOGGER
+#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 	ser.write(msg, size);
 	ser.print('\n');
@@ -78,7 +82,7 @@ void logs(const char* msg, uint8_t size) {
 }
 
 void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size) {
-#if ENABLE_LOGGER
+#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 	reset_sbuf();
 	pgmCopy(ifsh);
@@ -90,12 +94,14 @@ void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size) {
 }
 
 void logc(char val) {
+#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 	ser.print(val);
+#endif
 }
 
 void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size) {
-#if ENABLE_LOGGER
+#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 
 	reset_sbuf();
@@ -139,6 +145,7 @@ void log(const __FlashStringHelper *ifsh, ...) {
 // ### Private methods
 // ###########################################################
 
+#if ENABLE_LOGGER
 //long milis =  126000000 + 1440000 + 17000;// 1d 11h 24m 17s
 //long milis =  345600000 + 1440000 + 17000;// 4d 0h 24m 17s
 //long milis =  446400000 + 1440000 + 17000;// 5d 4h 24m 17s
@@ -180,7 +187,6 @@ static inline HardwareSerial& serial() {
 
 	return Serial;
 }
-
 static inline uint16_t getFreeRam() {
 	extern int __heap_start, *__brkval;
 	int v;
@@ -195,33 +201,22 @@ static inline void freeRAM() {
 	}
 }
 
-static inline void reset_sbuf() {
-#if ENABLE_LOGGER
-	for (uint8_t idx = 0; idx < SBUF_SIZE; idx++) {
-		sbuf[idx] = ' ';
+static inline void resetbuf(char *buf, uint8_t size) {
+	for (uint8_t idx = 0; idx < size; idx++) {
+		buf[idx] = '\0';
 	}
-	sbuf[SBUF_SIZE - 1] = '\0';
-#endif
+}
+
+static inline void reset_sbuf() {
+	resetbuf(sbuf, SBUF_SIZE);
 }
 
 static inline void reset_pgbuf() {
-#if ENABLE_LOGGER
-	for (uint8_t idx = 0; idx < PGBUF_SIZE; idx++) {
-		pgbuf[idx] = 0;
-	}
-#endif
+	resetbuf(pgbuf, PGBUF_SIZE);
 }
 
 static inline void pgmCopy(const __FlashStringHelper *ifsh) {
-#if ENABLE_LOGGER
-	PGM_P p = reinterpret_cast<PGM_P>(ifsh);
-	unsigned char ch = 0;
-	for(uint8_t pgbufIdx = 0; pgbufIdx < PGBUF_SIZE; pgbufIdx++) {
-		ch = pgm_read_byte(p++);
-		pgbuf[pgbufIdx] = ch;
-		if(ch == 0) {
-			break;
-		}
-	}
-#endif
+	strcpy_P(pgbuf, (char*)ifsh);
 }
+
+#endif

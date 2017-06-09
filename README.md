@@ -1,8 +1,9 @@
 ArdLog serves as simple logger for Arduino that creates formatted messages over Serial:
-* Each message has timestamp.
-* Each message within single loop has the same timestamp, so that you can logically connect activities together.
-* Messages can be formatted using *sprintf* syntax.
-* Text for the messages is being held in PROGMEM.
+* Each log message has timestamp,
+* each message within single loop has the same timestamp (configurable), so that you can logically connect activities together,
+* messages can be formatted using *sprintf* syntax,
+* text for the messages is being held in PROGMEM,
+* unsused functionality can be disabled to free up RAM.
 
 # Installation
 In order to install *ArdLog* you have to download desired release and unpack in into folder containing Arduino libraries. The is the result on MacOS:
@@ -14,13 +15,17 @@ $ ls
 ArdLog.cpp ArdLog.h   LICENSE    README.md
 ```
 
-# Configuration (*ArdLog.h*)
-* Logger is disabled by default, in order to enable it set *LOG* to true.
-* Messages are created over default Serial port. You can choose alternative port by setting: *USE_SERIAL_1*, *USE_SERIAL_2* or *USE_SERIAL_3* to true.
-* In order to print current time for each message set *USE_CURRENT_TIME* to true. By default logger will sample time only once at the beginning of each loop.
+# Configuration (*ArdLogSetup.h*)
+* Logger is enabled by default, in order to disable it set *LOG* or *TRACE* to false.
+* To free up RAM you can completly disable logger by setting *ENABLE_LOGGER* to false. In this case all methods and variables will not be compiled at all.
+* Messages are created over default *Serial* port. You can choose alternative port by setrting one of: *USE_SERIAL_1*, *USE_SERIAL_2* or *USE_SERIAL_3* to true.
+* In order to print current time for each log message set *USE_CURRENT_TIME* to true. By default logger will sample time only once at the beginning of each loop.
+* There are two formats of timestamp - full(*LOG_FULL_TIME*) and short (*LOG_SHORT_TIME*). Full  is enabled by default.
+* Each log message is using *sprintf* format. Meaning that there is a message template and corresponding parameters. Message template lenght is limited by it's buffer (*PGBUF_SIZE*). This also applyies to formated message that will be printed (*SBUF_SIZE*). Make sure to NOT overflow one of those buffers, oterwise Arduino will propably crash.
+* It's possible to log free RAM, this can be enabled by setting *LOG_FREE_RAM* to true. Log message will be only created once during initialization and afterwards when RAM amount changes.
 
 # Getting up an running
-1. Choose suitable configuration in *ArdLog.h*. In most cases you have to only set *LOG* to true.
+1. Choose suitable configuration in *ArdLogSetup.h*. In most cases you should be fine with default
 2. Call *log_setup()* in *setup()* method - this will initialize serial port.
 3. Call  *log_cycle()* at the beginning of each *loop()* - it will sample current time.
 4. Put log messages into *#if LOG log(F("....") #endif* - once logger is disabled, it will not waste RAM and CUP.

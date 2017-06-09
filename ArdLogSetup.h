@@ -30,14 +30,14 @@
 #define TRACE true
 
 /** Log full time, or shorter version */
-#define LOG_FULL_TIME false
-#define LOG_MIN_TIME false
+#define LOG_FULL_TIME true
+#define LOG_SHORT_TIME false
 
 /** log time. When off, time will not be logged at all. */
-#define LOG_TIME false
+#define LOG_TIME true
 
 /** Enable logs(....) and logc(...) functions. */
-#define LOGS false
+#define LOGS true
 
 /**
  * True will get current time on each call on log(), otherwise we will get one sample for each log_cycle() and
@@ -53,9 +53,11 @@
 #define USE_SERIAL_3 false
 
 /** Buffer size for sprintf-template passed as first argument to log method. */
-#define PGBUF_SIZE 28
+const static uint8_t PGBUF_SIZE = 64;
 
 /** Buffer size for created message. */
-#define SBUF_SIZE 42
+const static uint8_t SBUF_SIZE = 96;
+
+const static uint32_t SERIAL_SPEED = 115200;
 
 #endif /* ARD_LOG_DEFSETUP_H */

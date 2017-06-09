@@ -22,7 +22,6 @@
 #include "ArdLogSetup.h"
 
 #if ENABLE_LOGGER
-const static uint32_t SERIAL_SPEED = 115200;
 
 void log_setup();
 void log_cycle();

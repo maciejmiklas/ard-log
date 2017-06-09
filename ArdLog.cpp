@@ -143,7 +143,7 @@ void log(const __FlashStringHelper *ifsh, ...) {
 	sprintf(sbuf, ">[%03u-%02u:%02u:%02u,%03u]>", ts.dd, ts.hh, ts.mm, ts.ss, ts.ml);
 #endif
 
-#if LOG_MIN_TIME
+#if LOG_SHORT_TIME
 	sprintf(sbuf, ">[%02u:%02u,%03u]>", ts.mm, ts.ss, ts.ml);
 #endif
 	ser.print(sbuf);

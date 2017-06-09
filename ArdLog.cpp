@@ -16,8 +16,9 @@
  */
 #include "ArdLog.h"
 
-
 #if ENABLE_LOGGER
+
+#if LOG_TIME
 static struct Time {
 	uint16_t dd;
 	uint8_t hh;
@@ -25,8 +26,11 @@ static struct Time {
 	uint8_t ss;
 	uint16_t ml;
 } ts;
+#endif
 
+#if LOG_FREE_RAM
 static uint16_t lastRam = 0;
+#endif
 
 /** Buffer for created message */
 static char sbuf[SBUF_SIZE] = { 0 };
@@ -34,55 +38,75 @@ static char sbuf[SBUF_SIZE] = { 0 };
 /** Buffer for sprintf-template passed as first argument to log method. */
 static char pgbuf[PGBUF_SIZE] = { 0 };
 
+#if LOG_TIME
 const static uint16_t TR_MS_SEC = 1000;
 const static uint32_t TR_SEC_DD = 86400;
 const static uint16_t TR_SEC_HH = 3600;
 const static uint16_t TR_SEC_MM = 60;
+#endif // LOG_TIME
 
 static inline HardwareSerial& serial();
 static inline void pgmCopy(const __FlashStringHelper *ifsh);
 static inline void reset_pgbuf();
 static inline void reset_sbuf();
 static inline void resetbuf(char *buf, uint8_t size);
-static inline void freeRAM();
+
+#if LOG_FREE_RAM
+static inline void freeRAMln();
 static inline uint16_t getFreeRam();
-static inline void sampleTime();
 #endif
 
+#if LOG_TIME
+static inline void sampleTime();
+#endif // LOG_TIME
+
 void log_setup() {
-#if ENABLE_LOGGER
-	serial().begin(SERIAL_SPEED);
+	//serial().begin(SERIAL_SPEED);
 	log_cycle();
+#if LOG_FREE_RAM
 	log(F("LOG ON,RAM:%u"), getFreeRam());
 #endif
 }
 
+#if LOG_FREE_RAM
 void log_freeRAM(char const *msg) {
-#if ENABLE_LOGGER
 	uint16_t free = getFreeRam();
 	log(F("RAM(%s):%u"), msg, free);
-#endif
 }
+
+static inline uint16_t getFreeRam() {
+	extern int __heap_start, *__brkval;
+	int v;
+	return (uint16_t) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+static inline void freeRAMln() {
+	uint16_t free = getFreeRam();
+	if (lastRam != free) {
+		lastRam = free;
+		log(F("RAM:%u"), free);
+	}
+}
+#endif
 
 void log_cycle() {
-#if ENABLE_LOGGER_
+#if LOG_TIME
 	sampleTime();
-#if PRINT_FREE_RAM
-	freeRAM();
 #endif
+
+#if LOG_FREE_RAM
+	freeRAMln();
 #endif
 }
 
+#if LOGS
 void logs(const char* msg, uint8_t size) {
-#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 	ser.write(msg, size);
 	ser.print('\n');
-#endif
 }
 
 void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size) {
-#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 	reset_sbuf();
 	pgmCopy(ifsh);
@@ -90,18 +114,14 @@ void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size) {
 	msg[size - 1] = '\0';
 	ser.write(msg);
 	ser.print('\n');
-#endif
 }
 
 void logc(char val) {
-#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 	ser.print(val);
-#endif
 }
 
 void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size) {
-#if ENABLE_LOGGER_
 	HardwareSerial &ser = serial();
 
 	reset_sbuf();
@@ -109,11 +129,10 @@ void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size) {
 	ser.print(pgbuf);
 	ser.write(msg, size);
 	ser.print('\n');
-#endif
 }
+#endif // LOGS
 
 void log(const __FlashStringHelper *ifsh, ...) {
-#if ENABLE_LOGGER
 #if USE_CURRENT_TIME
 	sampleTime();
 #endif
@@ -128,7 +147,6 @@ void log(const __FlashStringHelper *ifsh, ...) {
 	sprintf(sbuf, ">[%02u:%02u,%03u]>", ts.mm, ts.ss, ts.ml);
 #endif
 	ser.print(sbuf);
-
 	// print the message
 	reset_pgbuf();
 	reset_sbuf();
@@ -139,13 +157,12 @@ void log(const __FlashStringHelper *ifsh, ...) {
 	vsprintf(sbuf, pgbuf, va);
 	va_end(va);
 	ser.println(sbuf);
-#endif
 }
 // ###########################################################
 // ### Private methods
 // ###########################################################
 
-#if ENABLE_LOGGER
+#if LOG_TIME
 //long milis =  126000000 + 1440000 + 17000;// 1d 11h 24m 17s
 //long milis =  345600000 + 1440000 + 17000;// 4d 0h 24m 17s
 //long milis =  446400000 + 1440000 + 17000;// 5d 4h 24m 17s
@@ -171,6 +188,7 @@ static inline void sampleTime() {
 	// millis of a second
 	ts.ml = (cycleMs % 1000);
 }
+#endif // LOG_TIME
 
 static inline HardwareSerial& serial() {
 #if USE_SERIAL_1
@@ -186,19 +204,6 @@ static inline HardwareSerial& serial() {
 #endif
 
 	return Serial;
-}
-static inline uint16_t getFreeRam() {
-	extern int __heap_start, *__brkval;
-	int v;
-	return (uint16_t) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-}
-
-static inline void freeRAM() {
-	uint16_t free = getFreeRam();
-	if (lastRam != free) {
-		lastRam = free;
-		log(F("RAM:%u"), free);
-	}
 }
 
 static inline void resetbuf(char *buf, uint8_t size) {
@@ -219,4 +224,6 @@ static inline void pgmCopy(const __FlashStringHelper *ifsh) {
 	strcpy_P(pgbuf, (char*)ifsh);
 }
 
-#endif
+#endif // ENABLE_LOGGER
+
+

@@ -19,42 +19,9 @@
 
 #include "Arduino.h"
 #include "stdarg.h"
+#include "ArdLogSetup.h"
 
-/** Logs free RAM if it has changed on every log_cycle() call. */
-#define PRINT_FREE_RAM false
-
-/** Enables logger so taht it can log over serial port. */
-#define ENABLE_LOGGER true
-
-/** Enables log on Deug level. */
-#define LOG true
-
-/** Enables log on Trace level. */
-#define TRACE true
-
-/** Log full time, or shorter version */
-#define LOG_FULL_TIME false
-#define LOG_MIN_TIME false
-
-/**
- * True will get current time on each call on log(), otherwise we will get one sample for each log_cycle() and
- * in this case all messages within single cycle will have the same timestamp.
- */
-#define USE_CURRENT_TIME false
-
-/**
- * 4 serial hardware ports are supported: 1,2,3. If all are set to false we will use default Serial.
- */
-#define USE_SERIAL_1 false
-#define USE_SERIAL_2 false
-#define USE_SERIAL_3 false
-
-/** Buffer size for sprintf-template passed as first argument to log method. */
-const static uint8_t PGBUF_SIZE = 64;
-
-/** Buffer size for created message. */
-const static uint8_t SBUF_SIZE = 128;
-
+#if ENABLE_LOGGER
 const static uint32_t SERIAL_SPEED = 115200;
 
 void log_setup();
@@ -62,9 +29,14 @@ void log_cycle();
 
 void log_freeRAM(char const *msg);
 void log(const __FlashStringHelper *ifsh, ...);
+
+#if LOGS
 void logc(char val);
 void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size);
 void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size);
 void logs(const char* msg, uint8_t size);
+#endif
+
+#endif // ENABLE_LOGGER
 
 #endif /* ARD_LOG_H */

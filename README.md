@@ -1,4 +1,4 @@
-ArdLog serves as simple logger for Arduino that creates formatted messages over Serial:
+**ArdLog** is simple logger for Arduino that creates formatted messages over Serial:
 * each log message has timestamp,
 * each message within single loop has the same timestamp (configurable), so that you can logically connect activities together,
 * messages can be formatted using *sprintf* syntax,

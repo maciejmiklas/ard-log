@@ -61,7 +61,7 @@ static inline void sampleTime();
 #endif // LOG_TIME
 
 void log_setup() {
-	//serial().begin(SERIAL_SPEED);
+	serial().begin(SERIAL_SPEED);
 	log_cycle();
 #if LOG_FREE_RAM
 	log(F("LOG ON,RAM:%u"), getFreeRam());

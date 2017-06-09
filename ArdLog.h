@@ -27,7 +27,10 @@ const static uint32_t SERIAL_SPEED = 115200;
 void log_setup();
 void log_cycle();
 
+#if LOG_FREE_RAM
 void log_freeRAM(char const *msg);
+#endif
+
 void log(const __FlashStringHelper *ifsh, ...);
 
 #if LOGS

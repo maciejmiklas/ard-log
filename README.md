@@ -12,7 +12,7 @@ $ pwd
 /Users/fred/Documents/Arduino/libraries/ArdLog
 
 $ ls
-ArdLog.cpp ArdLog.h   LICENSE    README.md
+ArdLog.cpp ArdLog.h ArdLogSetup.h  LICENSE    README.md 
 ```
 
 # Configuration (*ArdLogSetup.h*)

@@ -17,9 +17,6 @@
 #ifndef ARD_LOG_DEFSETUP_H
 #define ARD_LOG_DEFSETUP_H
 
-/** Logs free RAM if it has changed on every log_cycle() call. */
-#define LOG_FREE_RAM false
-
 /** Enables logger so taht it can log over serial port. */
 #define ENABLE_LOGGER true
 
@@ -28,6 +25,9 @@
 
 /** Enables log on Trace level. */
 #define TRACE true
+
+/** Logs free RAM if it has changed on every log_cycle() call. */
+#define LOG_FREE_RAM false
 
 /** Log full time, or shorter version */
 #define LOG_FULL_TIME true

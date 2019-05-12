@@ -99,7 +99,7 @@ void log_cycle() {
 #endif
 }
 
-#if LOGS
+#if ENABLE_LOGGER
 void logs(const char* msg, uint8_t size) {
 	HardwareSerial &ser = serial();
 	ser.write(msg, size);
@@ -130,7 +130,7 @@ void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size) {
 	ser.write(msg, size);
 	ser.print('\n');
 }
-#endif // LOGS
+#endif // ENABLE_LOGS
 
 void log(const __FlashStringHelper *ifsh, ...) {
 #if USE_CURRENT_TIME

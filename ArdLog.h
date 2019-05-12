@@ -32,7 +32,7 @@ void log_freeRAM(char const *msg);
 
 void log(const __FlashStringHelper *ifsh, ...);
 
-#if LOGS
+#if ENABLE_LOGGER
 void logc(char val);
 void logs(const __FlashStringHelper *ifsh, const char* msg, uint8_t size);
 void logs(const __FlashStringHelper *ifsh, char* msg, uint8_t size);
